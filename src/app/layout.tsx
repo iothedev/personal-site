@@ -1,5 +1,6 @@
 import { clsx } from 'clsx';
 import localFont from 'next/font/local';
+import { Analytics } from '@vercel/analytics/next';
 
 import './globals.css';
 
@@ -57,7 +58,11 @@ const RootLayout = ({
         lang='en'
         className={clsx(ppNeueMontreal.variable, 'h-full antialiased')}
     >
-        <body className='min-h-full flex flex-col'>{children}</body>
+        <body className='min-h-full flex flex-col'>
+            {children}
+
+            <Analytics />
+        </body>
     </html>
 );
 
