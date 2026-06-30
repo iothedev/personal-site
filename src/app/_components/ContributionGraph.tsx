@@ -92,7 +92,7 @@ const ContributionGraph = () => {
     }
 
     return (
-        <div className='flex flex-col'>
+        <>
             {/* Graph */}
             <div className='flex gap-0.5 justify-end overflow-hidden'>
                 {weeks.map((week, index) => (
@@ -121,11 +121,6 @@ const ContributionGraph = () => {
                     </div>
                 ))}
             </div>
-
-            {/* Description */}
-            <span className='mt-1.5 ml-auto text-right text-xs font-medium text-foreground-3'>
-                Custom-built GitHub contribution graph.
-            </span>
 
             {/* ToolTip */}
             {createPortal(
@@ -157,7 +152,7 @@ const ContributionGraph = () => {
                 </AnimatePresence>,
                 document.body,
             )}
-        </div>
+        </>
     );
 };
 export { ContributionGraph };
