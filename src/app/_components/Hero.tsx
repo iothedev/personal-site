@@ -16,21 +16,21 @@ const SOCIALS: {
     },
 
     {
-        icon: <Icons.X className='h-4.5' />,
+        icon: <Icons.X className='h-4' />,
         platform: 'X',
         username: 'iothedev',
         href: 'https://x.com/iothedev',
     },
 
     {
-        icon: <Icons.Telegram className='h-4.5' />,
+        icon: <Icons.Telegram className='h-4' />,
         platform: 'Telegram',
         username: 'iothedev',
         href: 'https://t.me/iothedev',
     },
 
     {
-        icon: <Icons.Discord className='h-4.5' />,
+        icon: <Icons.Discord className='h-4' />,
         platform: 'Discord',
         username: 'iothedev',
         href: 'https://discord.com/users/1080311571324084275',
