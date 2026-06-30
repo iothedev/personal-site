@@ -93,9 +93,11 @@ const ContributionGraph = () => {
 
     return (
         <div className='flex flex-col'>
+            {/* Graph */}
             <div className='flex gap-0.5 justify-end overflow-hidden'>
                 {weeks.map((week, index) => (
                     <div key={index} className='flex flex-col gap-0.5'>
+                        {/* Blob */}
                         {week.map(({ date, level, count }) => (
                             <div
                                 key={date}
@@ -120,10 +122,12 @@ const ContributionGraph = () => {
                 ))}
             </div>
 
+            {/* Description */}
             <span className='mt-1.5 ml-auto text-right text-xs font-medium text-foreground-3'>
                 Custom-built GitHub contribution graph.
             </span>
 
+            {/* ToolTip */}
             {createPortal(
                 <AnimatePresence>
                     {hoveredDay && (
