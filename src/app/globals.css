@@ -16,6 +16,8 @@
     --green-2: #3fc77a;
     --green-3: #1f9e5c;
     --green-4: #0a5c3a;
+
+    --red-1: #c10007;
 }
 
 @theme inline {
@@ -34,6 +36,8 @@
     --color-green-2: var(--green-2);
     --color-green-3: var(--green-3);
     --color-green-4: var(--green-4);
+
+    --color-red-1: var(--red-1);
 
     --font-sans: var(--font-pp-neue-montreal);
 }

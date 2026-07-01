@@ -80,7 +80,7 @@ const ContributionGraph = () => {
     useEffect(() => {
         fetch('/api/contributions')
             .then((response) => response.json())
-            .then((response) => setContributions(response.contributions));
+            .then(({ data }) => setContributions(data.contributions));
     }, []);
 
     if (!weeks.length) {

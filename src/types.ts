@@ -20,3 +20,12 @@ export type ExperienceItem = {
 
     role: string;
 };
+
+export type ValidationErrors = Record<string, string>;
+
+export type RawValidationError = {
+    expected: string;
+    code: string;
+    path: string[];
+    message: string;
+};

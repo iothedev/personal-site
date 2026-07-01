@@ -3,5 +3,6 @@ import X from './X.svg';
 import Telegram from './Telegram.svg';
 import Discord from './Discord.svg';
 import Fractioned from './Fractioned.svg';
+import ChevronDown from './ChevronDown.svg';
 
-export default { GitHub, X, Telegram, Discord, Fractioned };
+export default { GitHub, X, Telegram, Discord, Fractioned, ChevronDown };

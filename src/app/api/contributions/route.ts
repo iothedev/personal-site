@@ -33,7 +33,10 @@ const GET = async () => {
         (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
     );
 
-    return NextResponse.json({ contributions });
+    return NextResponse.json({
+        success: true,
+        data: { contributions },
+    });
 };
 
 export { GET };

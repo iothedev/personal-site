@@ -3,3 +3,4 @@ export { Timezone } from './Timezone';
 export { ContributionGraph } from './ContributionGraph';
 export { Availability } from './Availability';
 export { Experience } from './Experience';
+export { Form } from './Form';
