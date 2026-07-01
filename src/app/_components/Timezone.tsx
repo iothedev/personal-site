@@ -29,14 +29,14 @@ const Timezone = () => {
     }
 
     return (
-        <div className='ml-auto py-2 px-3 bg-background-2 border border-border-2 flex items-center gap-2.5'>
+        <div className='w-fit py-2 px-3 bg-background-2 border border-border-2 flex items-center gap-2.5'>
             {/* Time */}
             <span className='text-xs font-medium w-[46px] text-right'>
                 {time}
             </span>
 
             {/* Divider */}
-            <div className='size-[2.5px] rounded-full bg-border-1' />
+            <div className='size-[2.5px] rounded-full bg-border-1 shrink-0' />
 
             {/* Timezone */}
             <span className='text-xs font-medium text-foreground-2 uppercase'>
