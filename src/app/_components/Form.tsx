@@ -180,6 +180,13 @@ const Form = () => {
                 }}
             />
 
+            {/* Captcha Message */}
+            {!captchaToken && (
+                <span className='mt-1.5 text-xs font-medium text-foreground-3 animate-pulse'>
+                    Verifying you are human...
+                </span>
+            )}
+
             {/* Submit */}
             <button
                 className={clsx(
@@ -196,12 +203,10 @@ const Form = () => {
                 </span>
             </button>
 
-            {/* Captcha Message */}
-            {!captchaToken && (
-                <span className='mt-1.5 text-xs font-medium text-foreground-3 animate-pulse'>
-                    Verifying you are human...
-                </span>
-            )}
+            {/* Legal Disclaimer */}
+            <span className='block mt-2 text-xs font-medium text-foreground-3'>
+                Protected by Cloudflare Turnstile - Privacy Addendum applies
+            </span>
         </div>
     );
 };
