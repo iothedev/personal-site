@@ -57,19 +57,10 @@ const Dropdown = ({
 
     return (
         <div className={clsx('flex flex-col gap-1.5', className)}>
-            <div className='flex items-start gap-2 w-full min-w-0'>
-                {/* Label */}
-                <span className='text-xs font-medium text-foreground-2 shrink-0 whitespace-nowrap'>
-                    {label}
-                </span>
-
-                {/* Error Message */}
-                {error && (
-                    <span className='text-xs font-medium text-red-1 ml-auto min-w-0 flex-1 text-right'>
-                        {error}
-                    </span>
-                )}
-            </div>
+            {/* Label */}
+            <span className='text-xs font-medium text-foreground-2 shrink-0 whitespace-nowrap'>
+                {label}
+            </span>
 
             {/* Dropdown */}
             <div ref={rootRef} className='relative'>
@@ -126,6 +117,13 @@ const Dropdown = ({
                     )}
                 </AnimatePresence>
             </div>
+
+            {/* Error Message */}
+            {error && (
+                <span className='text-xs font-medium text-red-1 ml-auto min-w-0 flex-1 text-right'>
+                    {error}
+                </span>
+            )}
         </div>
     );
 };

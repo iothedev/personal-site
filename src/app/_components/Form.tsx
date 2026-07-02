@@ -5,7 +5,7 @@ import { useState, useCallback } from 'react';
 
 import { Input, Textarea, Dropdown } from '@/components';
 
-import type { ValidationErrors } from '@/types';
+import type { RawValidationError, ValidationErrors } from '@/types';
 
 const Form = () => {
     const [name, setName] = useState<string>('');
@@ -20,6 +20,7 @@ const Form = () => {
         useState<null | ValidationErrors>(null);
 
     const submitForm = useCallback(() => {
+        setValidationErrors(null);
         setIsLoading(true);
 
         fetch(`/api/contact`, {
@@ -30,7 +31,14 @@ const Form = () => {
             .then((res) => res.json())
             .then(({ success, error }) => {
                 if (!success) {
-                    return setValidationErrors(error);
+                    const formattedErrors = Object.fromEntries(
+                        error.map((issue: RawValidationError) => [
+                            issue.path[0],
+                            issue.message,
+                        ]),
+                    );
+
+                    return setValidationErrors(formattedErrors);
                 }
 
                 setIsSubmitted(true);
@@ -123,6 +131,7 @@ const Form = () => {
                 error={validationErrors?.description}
             />
 
+            {/* Submit */}
             <button
                 className={clsx(
                     'mt-4.5 w-full bg-foreground-1 py-2.5 px-3 flex items-center justify-center',
