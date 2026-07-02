@@ -204,7 +204,7 @@ const Form = () => {
             </button>
 
             {/* Legal Disclaimer */}
-            <span className='block mt-2 text-xs font-medium text-foreground-3'>
+            <span className='block mt-2 text-[10px] font-medium text-foreground-3'>
                 Protected by Cloudflare Turnstile - Privacy Addendum applies
             </span>
         </div>
