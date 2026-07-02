@@ -29,3 +29,8 @@ export type RawValidationError = {
     path: string[];
     message: string;
 };
+
+export type TurnstileResponse = {
+    success: boolean;
+    'error-codes'?: string[];
+};

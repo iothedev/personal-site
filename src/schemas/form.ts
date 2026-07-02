@@ -27,6 +27,8 @@ const form = z.object({
         .string()
         .min(10, 'Description must be at least 10 characters')
         .max(512, 'Description must be under 512 characters'),
+
+    captchaToken: z.string().min(1, 'Captcha token is required'),
 });
 
 export { form };

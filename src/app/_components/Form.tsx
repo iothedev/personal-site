@@ -1,11 +1,17 @@
 'use client';
 
 import clsx from 'clsx';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
+import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile';
 
 import { Input, Textarea, Dropdown } from '@/components';
 
 import type { RawValidationError, ValidationErrors } from '@/types';
+
+const TURNSTILE_PUBLIC_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+if (!TURNSTILE_PUBLIC_KEY) {
+    throw new Error('NEXT_PUBLIC_TURNSTILE_SITE_KEY not defined in .env');
+}
 
 const Form = () => {
     const [name, setName] = useState<string>('');
@@ -13,39 +19,62 @@ const Form = () => {
     const [budget, setBudget] = useState<string>('');
     const [description, setDescription] = useState<string>('');
 
+    const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
+    const [error, setError] = useState<null | string>(null);
     const [validationErrors, setValidationErrors] =
         useState<null | ValidationErrors>(null);
 
+    const turnstileRef = useRef<TurnstileInstance | null>(null);
+
     const submitForm = useCallback(() => {
+        setError(null);
         setValidationErrors(null);
+
         setIsLoading(true);
 
         fetch(`/api/contact`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, contact, budget, description }),
+            body: JSON.stringify({
+                name,
+                contact,
+                budget,
+                description,
+                captchaToken,
+            }),
         })
             .then((res) => res.json())
-            .then(({ success, error }) => {
-                if (!success) {
+            .then(({ error }) => {
+                turnstileRef.current?.reset();
+                setCaptchaToken(null);
+
+                if (error?.issues) {
                     const formattedErrors = Object.fromEntries(
-                        error.map((issue: RawValidationError) => [
+                        error.issues.map((issue: RawValidationError) => [
                             issue.path[0],
                             issue.message,
                         ]),
                     );
 
-                    return setValidationErrors(formattedErrors);
+                    setValidationErrors(formattedErrors);
+                    return;
+                }
+
+                if (error?.message) {
+                    setError(error.message);
+                    return;
                 }
 
                 setIsSubmitted(true);
                 setValidationErrors(null);
+                setError(null);
             })
             .finally(() => setIsLoading(false));
-    }, [name, contact, budget, description]);
+    }, [name, contact, budget, description, captchaToken, turnstileRef]);
 
     if (isSubmitted) {
         return (
@@ -82,6 +111,15 @@ const Form = () => {
 
     return (
         <div className='mt-6 w-full border-t border-border-2 pt-6'>
+            {/* General Error */}
+            {error && (
+                <div className='mb-4.5 py-2 px-3 bg-red-1/10 border border-red-1/15'>
+                    <span className='text-xs sm:text-sm font-medium text-red-1'>
+                        {error}
+                    </span>
+                </div>
+            )}
+
             <div className='w-full flex gap-2.5'>
                 {/* Name */}
                 <Input
@@ -131,21 +169,39 @@ const Form = () => {
                 error={validationErrors?.description}
             />
 
+            {/* Invisible Captcha */}
+            <Turnstile
+                ref={turnstileRef}
+                siteKey={TURNSTILE_PUBLIC_KEY}
+                onSuccess={setCaptchaToken}
+                options={{
+                    theme: 'light',
+                    size: 'invisible',
+                }}
+            />
+
             {/* Submit */}
             <button
                 className={clsx(
                     'mt-4.5 w-full bg-foreground-1 py-2.5 px-3 flex items-center justify-center',
-                    isLoading
+                    !captchaToken || isLoading
                         ? 'opacity-80 cursor-not-allowed'
                         : 'cursor-pointer hover:opacity-90',
                 )}
                 onClick={submitForm}
-                disabled={isLoading}
+                disabled={!captchaToken || isLoading}
             >
                 <span className='text-xs sm:text-sm font-medium text-background-1'>
                     {isLoading ? 'Submitting Form...' : 'Submit Form'}
                 </span>
             </button>
+
+            {/* Captcha Message */}
+            {!captchaToken && (
+                <span className='mt-1.5 text-xs font-medium text-foreground-3 animate-pulse'>
+                    Verifying you are human...
+                </span>
+            )}
         </div>
     );
 };

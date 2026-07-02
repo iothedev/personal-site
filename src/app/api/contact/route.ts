@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 
 import schema from '@/schemas';
 
-const WEBHOOK = process.env.DISCORD_WEBHOOK_URL;
+import type { TurnstileResponse } from '@/types';
+
 const BUDGETS = {
     '500-1000': '$500 - $1,000',
     '1000-5000': '$1,000 - $5,000',
@@ -12,8 +13,11 @@ const BUDGETS = {
     '50000+': '$50,000+',
 } as const;
 
-if (!WEBHOOK) {
-    throw new Error('DISCORD_WEBHOOK_URL not defined in .env');
+const WEBHOOK = process.env.DISCORD_WEBHOOK;
+const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET;
+
+if (!WEBHOOK || !TURNSTILE_SECRET) {
+    throw new Error('DISCORD_WEBHOOK or TURNSTILE_SECRET not defined in .env');
 }
 
 const POST = async (req: Request) => {
@@ -22,13 +26,35 @@ const POST = async (req: Request) => {
     const { error, data } = schema.form.safeParse(body);
 
     if (error) {
-        return NextResponse.json({
-            success: false,
-            error: error.issues,
-        });
+        return NextResponse.json(
+            { success: false, error: { issues: error.issues } },
+            { status: 400 },
+        );
     }
 
-    const { name, contact, budget: rawBudget, description } = data;
+    const {
+        name,
+        contact,
+        budget: rawBudget,
+        description,
+        captchaToken,
+    } = data;
+
+    const formData = new URLSearchParams();
+    formData.append('secret', TURNSTILE_SECRET);
+    formData.append('response', captchaToken);
+
+    const captchaResponse = await fetch(
+        'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+        { method: 'POST', body: formData },
+    ).then((res) => res.json() as Promise<TurnstileResponse>);
+
+    if (!captchaResponse.success) {
+        return NextResponse.json(
+            { success: false, error: { message: 'Invalid captcha' } },
+            { status: 400 },
+        );
+    }
 
     const embed = {
         title: 'New Form Submission',
