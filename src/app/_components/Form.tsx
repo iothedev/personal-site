@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { useState, useCallback, useRef } from 'react';
 import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile';
 
-import { Input, Textarea, Dropdown } from '@/components';
+import { Input, Textarea, Dropdown, Button } from '@/components';
 
 import type { RawValidationError, ValidationErrors } from '@/types';
 
@@ -110,7 +110,7 @@ const Form = () => {
     }
 
     return (
-        <div className='mt-6 w-full border-t border-border-2 pt-6'>
+        <div className='mt-6 w-full border-t border-border-2 pt-6 flex flex-col'>
             {/* General Error */}
             {error && (
                 <div className='mb-4.5 py-2 px-3 bg-red-1/10 border border-red-1/15'>
@@ -180,33 +180,28 @@ const Form = () => {
                 }}
             />
 
-            {/* Captcha Message */}
-            {!captchaToken && (
-                <span className='mt-1.5 text-xs font-medium text-foreground-3 animate-pulse'>
-                    Verifying you are human...
-                </span>
-            )}
-
             {/* Submit */}
-            <button
-                className={clsx(
-                    'mt-4.5 w-full bg-foreground-1 py-2.5 px-3 flex items-center justify-center',
-                    !captchaToken || isLoading
-                        ? 'opacity-80 cursor-not-allowed'
-                        : 'cursor-pointer hover:opacity-90',
-                )}
+            <Button.Primary
                 onClick={submitForm}
                 disabled={!captchaToken || isLoading}
+                className='mt-4.5 w-full'
             >
-                <span className='text-xs sm:text-sm font-medium text-background-1'>
-                    {isLoading ? 'Submitting Form...' : 'Submit Form'}
-                </span>
-            </button>
+                {isLoading ? 'Submitting Form...' : 'Submit Form'}
+            </Button.Primary>
 
-            {/* Legal Disclaimer */}
-            <span className='block mt-2 text-[10px] font-medium text-foreground-3'>
-                Protected by Cloudflare Turnstile - Privacy Addendum applies
-            </span>
+            <div className='mt-1.5 flex items-start justify-between'>
+                {/* Captcha Message */}
+                {!captchaToken && (
+                    <span className='text-xs font-medium text-foreground-3 animate-pulse'>
+                        Verifying you are human...
+                    </span>
+                )}
+
+                {/* Legal Disclaimer */}
+                <span className='ml-auto text-[10px] font-medium text-foreground-3'>
+                    Protected by Cloudflare Turnstile - Privacy Addendum applies
+                </span>
+            </div>
         </div>
     );
 };
