@@ -94,7 +94,7 @@ const Form = () => {
                     {/* Description */}
                     <span className='mt-0.5 text-xs sm:text-sm text-foreground-2 font-medium'>
                         I'll contact you soon, usually within a few hours. If
-                        your any details are incorrect,{' '}
+                        any details are incorrect,{' '}
                         <button
                             className='underline cursor-pointer'
                             onClick={() => setIsSubmitted(false)}
