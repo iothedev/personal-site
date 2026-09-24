@@ -21,9 +21,11 @@ const Home = () => (
         <ContributionGraph />
 
         {/* Divider */}
+        {/*
         <div className='w-full h-px bg-border-2 mt-6' />
 
-        <Experience />
+        <Experience /> 
+        */}
 
         <Form />
     </div>

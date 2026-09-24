@@ -3,18 +3,19 @@ import Icons from '@/icons';
 import type { ExperienceItem } from '@/types';
 
 const EXPERIENCE: ExperienceItem[] = [
+    /*
     {
         company: {
-            icon: <Icons.Fractioned className='w-4 text-foreground-1' />,
-            name: 'Fractioned',
-            description:
-                'Solana-native forecasting platform where you stake your conviction on real-world outcomes.',
+            icon: <Icons.Example className='w-4 text-foreground-1' />,
+            name: 'Company Name',
+            description: 'Company description',
         },
 
-        duration: { start: 'Q2 2026' },
+        duration: { start: '2024' },
 
-        role: 'Technical Co-Founder',
+        role: 'Job Title',
     },
+    */
 ];
 
 const Experience = () => (
